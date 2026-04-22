@@ -3,9 +3,11 @@ export type Category = 'dolor' | 'gripe' | 'alergias' | 'digestivo';
 export interface Medication {
   id: string;
   name: string;
+  brand: string;
   category: Category;
   activeIngredient: string;
   dose: string;
+  packageSize: number;
   priceCents: number;
   imageUrl: string;
   requiresPrescription: boolean;
