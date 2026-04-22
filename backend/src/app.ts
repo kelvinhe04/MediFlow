@@ -16,6 +16,30 @@ export function createApp() {
     })
   );
 
+  app.use("/images/*", async (c) => {
+    const path = c.req.path.replace(/^\//, "");
+    const filePath = `./public/${path}`;
+    try {
+      const file = Bun.file(filePath);
+      const ext = path.split(".").pop()?.toLowerCase();
+      const contentTypes: Record<string, string> = {
+        jpg: "image/jpeg",
+        jpeg: "image/jpeg",
+        png: "image/png",
+        webp: "image/webp",
+        gif: "image/gif",
+      };
+      return new Response(file, {
+        headers: {
+          "Content-Type": contentTypes[ext ?? ""] ?? "application/octet-stream",
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
+      });
+    } catch {
+      return c.json({ error: "Not Found" }, 404);
+    }
+  });
+
   app.route("/api", apiRoutes);
 
   app.notFound((c) => c.json({ error: "Not Found" }, 404));

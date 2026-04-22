@@ -1,7 +1,3 @@
-export function getMedicationImageUrl(id: string): string {
-  return `/images/svg/${id}`;
-}
-
 export type Category = 'dolor' | 'gripe' | 'alergias' | 'digestivo';
 
 export interface Medication {
@@ -24,6 +20,7 @@ export interface CartItem {
   name: string;
   priceCents: number;
   quantity: number;
+  imageUrl: string;
 }
 
 export type OrderStatus = 'pending' | 'paid' | 'failed' | 'cancelled';

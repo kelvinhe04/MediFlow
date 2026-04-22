@@ -4,7 +4,6 @@ import { Layout } from '../components/Layout';
 import { getMedicationById } from '../services/medications';
 import { useCartStore } from '../store/cartStore';
 import type { Medication } from '../types';
-import { getMedicationImageUrl } from '../types';
 
 function formatPrice(cents: number) {
   return `$${(cents / 100).toFixed(2)}`;
@@ -35,6 +34,7 @@ export function ProductDetailPage() {
       name: medication.name,
       priceCents: medication.priceCents,
       quantity,
+      imageUrl: medication.imageUrl,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -59,7 +59,7 @@ export function ProductDetailPage() {
         alignItems: 'start',
       }}>
         <img
-          src={getMedicationImageUrl(medication.id)}
+          src={medication.imageUrl || medication.name}
           alt={medication.name}
           style={{ width: '100%', borderRadius: '12px', border: '1px solid #e5e7eb' }}
         />

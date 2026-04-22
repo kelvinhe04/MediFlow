@@ -19,11 +19,13 @@ E-commerce B2C para la venta de medicamentos OTC (sin receta) en Panamá. Compra
 ## Features
 
 - Catálogo de medicamentos por categoría (`dolor`, `gripe`, `alergias`, `digestivo`)
-- Detalle de producto
+- **Paginación** — 8 productos por página en el catálogo
+- Detalle de producto con selector de cantidad
 - Carrito persistente (Zustand + localStorage)
 - Checkout con Stripe Checkout Sessions
 - Autenticación con Clerk (email OTP, Google, Microsoft)
 - ITBMS 7% aplicado en backend
+- Imágenes de productos servidas estáticamente desde `backend/public/images/`
 
 ---
 
@@ -44,14 +46,15 @@ El frontend nunca accede directamente a MongoDB.
 
 ```
 MediFlow/
-├── shared/         # @mediflow/shared (tipos y schemas)
-├── backend/        # @mediflow/backend
+├── shared/                    # @mediflow/shared (tipos y schemas)
+├── backend/                  # @mediflow/backend
 │   └── src/
-│       ├── routes/
-│       ├── services/
-│       ├── repositories/
-│       └── integrations/
-└── frontend/       # @mediflow/frontend
+│       ├── routes/             # REST endpoints
+│       ├── services/          # lógica de negocio
+│       ├── repositories/        # acceso a MongoDB
+│       └── integrations/        # Clerk, Stripe
+│   └── public/images/         # imágenes de productos (estáticos)
+└── frontend/                 # @mediflow/frontend
     └── src/
         ├── pages/
         ├── components/
@@ -96,6 +99,12 @@ bun run dev           # Corre backend + frontend concurrently
 # Copiar STRIPE_WEBHOOK_SECRET al .env del backend
 ```
 
+### Seed de productos
+
+```bash
+cd backend && bun run seed
+```
+
 ---
 
 ## Variables de Entorno
@@ -123,8 +132,25 @@ bun run dev           # Corre backend + frontend concurrently
 
 ---
 
+## Imágenes de Productos
+
+Las imágenes se encuentran en `backend/public/images/` organizadas por categoría:
+
+```
+backend/public/images/
+├── dolor/
+├── gripe/
+├── alergias/
+└── digestivo/
+```
+
+Las URLs se almacenan en MongoDB como `/images/{categoria}/{archivo}.{ext}`.
+El backend las sirve estáticamente desde `/images/*`.
+
+---
+
 ## Limitaciones
 
 - Stripe en modo sandbox (solo pruebas con `4242 4242 4242 4242`)
 - Solo medicamentos OTC en formato tabletas
-- Imágenes placeholder (reemplazar en producción)
+- Imágenes placeholder solo si no se cargan las reales
