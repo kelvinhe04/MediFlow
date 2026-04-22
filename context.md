@@ -90,18 +90,16 @@ MediFlow/
 │       ├── middleware/
 │       │   └── auth.ts        # requireAuth — verifica JWT de Clerk
 │       ├── integrations/
-│       │   ├── clerk/         # (carpeta reservada, lógica en middleware/auth.ts)
+│       │   ├── clerk/
 │       │   └── stripe/
-│       │       ├── client.ts  # Instancia Stripe
-│       │       └── webhook.ts # constructEventAsync + handleEvent (idempotente) + decrementStock al pagar
-│       ├── routes/
-│       │   ├── index.ts       # Agrega todas las rutas bajo /api
-│       │   ├── health.routes.ts
-│       │   ├── medications.routes.ts
-│       │   ├── orders.routes.ts
-│       │   ├── checkout.routes.ts
-│       │   └── webhook.routes.ts
-│       └── seed.ts            # 16 medicamentos + índices de MongoDB
+│       └── routes/
+│           ├── index.ts       # Agrega todas las rutas bajo /api
+│           ├── health.routes.ts
+│           ├── medications.routes.ts
+│           ├── orders.routes.ts
+│           ├── checkout.routes.ts
+│           └── webhook.routes.ts
+│       └── seed.ts            # 23 medicamentos + índices de MongoDB
 │
 └── frontend/                  # @mediflow/frontend
     ├── .env.example
@@ -122,10 +120,10 @@ MediFlow/
         ├── components/
         │   ├── Layout.tsx     # Wrapper con Navbar + main centrado
         │   ├── Navbar.tsx     # Logo, Catálogo, carrito con badge, Clerk auth
-        │   └── ProductCard.tsx # Imagen, nombre, dosis, precio, botón agregar
+        │   └── ProductCard.tsx # Imagen, nombre, dosis, precio, botón agregar (usa medication.imageUrl)
         ├── pages/
         │   ├── LandingPage.tsx       # Hero + cards de categorías → /products?category=
-        │   ├── ProductsPage.tsx      # Grid con filtros por categoría (query param)
+        │   ├── ProductsPage.tsx      # Grid con filtros por categoría (query param) + paginación
         │   ├── ProductDetailPage.tsx # Detalle, selector cantidad, agregar al carrito
         │   ├── CartPage.tsx          # Items, cantidades, resumen con ITBMS, → /checkout
         │   ├── CheckoutPage.tsx      # Resumen + botón pagar (abre Clerk si no autenticado)
@@ -299,7 +297,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
 - [x] Idempotencia en webhook por `stripeEventIdsProcessed[]`
 - [x] Stock se descuenta en el webhook tras pago confirmado (`decrementStock`)
 - [x] Fix: webhook usa `constructEventAsync` (requerido por Bun runtime)
-- [x] Seed con los 16 medicamentos del catálogo + índices MongoDB
+- [x] Seed con los 23 medicamentos del catálogo + índices MongoDB
 - [x] `ClerkProvider` integrado con `BrowserRouter` y `useNavigate`
 - [x] `apiClient` helper con soporte de Bearer token
 - [x] Proxy `/api` en Vite apuntando a `localhost:3000`
@@ -308,13 +306,14 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
 - [x] Flujo auth: invitados pueden agregar al carrito, Clerk modal al intentar pagar
 - [x] Stripe CLI instalado vía descarga directa (`~/stripe-cli/stripe.exe`)
 - [x] `STRIPE_WEBHOOK_SECRET` configurado con valor real
+- [x] **Imágenes de productos reales** — servidas estáticamente desde `backend/public/images/{categoria}/`
+- [x] **Paginación** — 8 productos por página en el catálogo
 
 ### Pendiente
 
 - [ ] **Frontend — Admin**: panel protegido por rol — CRUD de productos, listado de órdenes
 - [ ] **Backend — Admin endpoints**: `POST/PATCH/DELETE /api/admin/products`, `GET/PATCH /api/admin/orders`
 - [ ] **Backend — Carrito persistente**: colección `carts` con merge al autenticarse
-- [ ] **Seed de imágenes reales**: reemplazar URLs de placehold.co
 
 ---
 
