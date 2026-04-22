@@ -1,0 +1,30 @@
+{
+  "name": "mediflow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "E-commerce B2C de medicamentos OTC (tabletas) en Panamá",
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n be,fe -c blue,green \"bun run dev:backend\" \"bun run dev:frontend\"",
+    "dev:backend": "bun --filter @mediflow/backend dev",
+    "dev:frontend": "bun --filter @mediflow/frontend dev",
+    "build": "bun --filter @mediflow/backend build && bun --filter @mediflow/frontend build",
+    "typecheck": "bun --filter @mediflow/shared typecheck && bun --filter @mediflow/backend typecheck && bun --filter @mediflow/frontend typecheck",
+    "lint": "bun --filter @mediflow/backend lint && bun --filter @mediflow/frontend lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "@types/bun": "latest",
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "bun": ">=1.1.0"
+  },
+  "dependencies": {
+    "framer-motion": "^12.38.0"
+  }
+}

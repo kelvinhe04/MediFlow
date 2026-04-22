@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["bun"],
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@mediflow/shared": ["../shared/src/index.ts"],
+      "@mediflow/shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "references": [{ "path": "../shared" }]
+}
