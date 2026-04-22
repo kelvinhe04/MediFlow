@@ -4,6 +4,7 @@ import { medicationsRoutes } from "./medications.routes";
 import { ordersRoutes } from "./orders.routes";
 import { checkoutRoutes } from "./checkout.routes";
 import { webhookRoutes } from "./webhook.routes";
+import { imageRoutes } from "./image.routes";
 
 export const apiRoutes = new Hono();
 
@@ -12,3 +13,4 @@ apiRoutes.route("/medications", medicationsRoutes);
 apiRoutes.route("/orders", ordersRoutes);
 apiRoutes.route("/checkout", checkoutRoutes);
 apiRoutes.route("/stripe/webhook", webhookRoutes);
+apiRoutes.route("/images", imageRoutes());

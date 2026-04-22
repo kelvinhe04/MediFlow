@@ -5,6 +5,8 @@ export async function listMedications(category?: string) {
   return docs.map(({ _id, ...rest }) => ({ id: _id!.toString(), ...rest }));
 }
 
+export { listMedications as getMedications };
+
 export async function getMedication(id: string) {
   const doc = await medicationsRepo.findById(id);
   if (!doc) return null;

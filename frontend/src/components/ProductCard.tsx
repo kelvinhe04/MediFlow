@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Medication } from '../types';
 import { useCartStore } from '../store/cartStore';
+import { getMedicationImageUrl } from '../types';
 
 function formatPrice(cents: number) {
   return `$${(cents / 100).toFixed(2)}`;
@@ -15,7 +16,6 @@ export function ProductCard({ medication }: { medication: Medication }) {
       name: medication.name,
       priceCents: medication.priceCents,
       quantity: 1,
-      imageUrl: medication.imageUrl,
     });
   }
 
@@ -30,7 +30,7 @@ export function ProductCard({ medication }: { medication: Medication }) {
     }}>
       <Link to={`/products/${medication.id}`}>
         <img
-          src={medication.imageUrl}
+          src={getMedicationImageUrl(medication.id)}
           alt={medication.name}
           style={{ width: '100%', height: '180px', objectFit: 'cover' }}
         />
