@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Layout } from "../components/Layout";
+import { handleImageFallback } from "../shared/imageFallback";
 
 const CATEGORIES = [
   { cat: "dolor", imageUrl: "/images/dolor/aspirina-500mg-20tab.webp", label: "Dolor" },
@@ -22,9 +23,6 @@ const BENEFITS = [
     description: "Checkout seguro y experiencia clara desde carrito hasta confirmación.",
   },
 ] as const;
-
-const CATEGORY_IMAGE_FALLBACK =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%23e2e8f0'/%3E%3C/svg%3E";
 
 export function LandingPage() {
   return (
@@ -56,10 +54,7 @@ export function LandingPage() {
                   alt={`Productos de ${label}`}
                   className="category-image"
                   loading="lazy"
-                  onError={(event) => {
-                    event.currentTarget.onerror = null;
-                    event.currentTarget.src = CATEGORY_IMAGE_FALLBACK;
-                  }}
+                  onError={handleImageFallback}
                 />
               </div>
               <p className="category-title">{label}</p>

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { getMedicationById } from '../services/medications';
 import { useCartStore } from '../store/cartStore';
+import { handleImageFallback, withImagePlaceholder } from '../shared/imageFallback';
 import type { Medication } from '../types';
 
 function formatPrice(cents: number) {
@@ -59,8 +60,9 @@ export function ProductDetailPage() {
         alignItems: 'start',
       }}>
         <img
-          src={medication.imageUrl || medication.name}
+          src={withImagePlaceholder(medication.imageUrl)}
           alt={medication.name}
+          onError={handleImageFallback}
           style={{ width: '100%', borderRadius: '12px', border: '1px solid #e5e7eb' }}
         />
 

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import type { Medication } from '../types';
 import { useCartStore } from '../store/cartStore';
+import { handleImageFallback, withImagePlaceholder } from '../shared/imageFallback';
 
 function formatPrice(cents: number) {
   return `$${(cents / 100).toFixed(2)}`;
@@ -30,8 +31,9 @@ export function ProductCard({ medication }: { medication: Medication }) {
     }}>
       <Link to={`/products/${medication.id}`}>
         <img
-          src={medication.imageUrl || medication.name}
+          src={withImagePlaceholder(medication.imageUrl)}
           alt={medication.name}
+          onError={handleImageFallback}
           style={{ width: '100%', height: '180px', objectFit: 'cover' }}
         />
       </Link>

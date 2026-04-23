@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { useCartStore } from '../store/cartStore';
+import { handleImageFallback, withImagePlaceholder } from '../shared/imageFallback';
 
 function formatPrice(cents: number) {
   return `$${(cents / 100).toFixed(2)}`;
@@ -62,8 +63,9 @@ export function CartPage() {
               padding: '1rem',
             }}>
               <img
-                src={item.imageUrl}
+                src={withImagePlaceholder(item.imageUrl)}
                 alt={item.name}
+                onError={handleImageFallback}
                 style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '6px' }}
               />
 
