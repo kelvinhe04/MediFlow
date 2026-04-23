@@ -1,60 +1,86 @@
-import { Link } from 'react-router-dom';
-import { Layout } from '../components/Layout';
+import { Link } from "react-router-dom";
+import { Layout } from "../components/Layout";
 
 const CATEGORIES = [
-  { cat: 'dolor', emoji: '💊', label: 'Dolor' },
-  { cat: 'gripe', emoji: '🤧', label: 'Gripe' },
-  { cat: 'alergias', emoji: '🌿', label: 'Alergias' },
-  { cat: 'digestivo', emoji: '🫃', label: 'Digestivo' },
-];
+  { cat: "dolor", imageUrl: "/images/dolor/aspirina-500mg-20tab.webp", label: "Dolor" },
+  { cat: "gripe", imageUrl: "/images/gripe/panadol-multisintomas-48tab.webp", label: "Gripe" },
+  { cat: "alergias", imageUrl: "/images/alergias/cetirizina-10mg-20tab.jpg", label: "Alergias" },
+  { cat: "digestivo", imageUrl: "/images/digestivo/omeprazol-20mg-14cap.webp", label: "Digestivo" },
+] as const;
+
+const BENEFITS = [
+  {
+    title: "Entrega rápida",
+    description: "Despacho ágil en Panamá para que recibas tu pedido sin demoras.",
+  },
+  {
+    title: "Stock confiable",
+    description: "Inventario actualizado y productos OTC listos para compra segura.",
+  },
+  {
+    title: "Pago protegido",
+    description: "Checkout seguro y experiencia clara desde carrito hasta confirmación.",
+  },
+] as const;
+
+const CATEGORY_IMAGE_FALLBACK =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%23e2e8f0'/%3E%3C/svg%3E";
 
 export function LandingPage() {
   return (
     <Layout>
-      <section style={{ textAlign: 'center', padding: '4rem 0 3rem' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 700, color: '#111827', marginBottom: '1rem', lineHeight: 1.2 }}>
-          Medicamentos OTC<br />entregados en Panamá
-        </h1>
-        <p style={{ color: '#6b7280', fontSize: '1.1rem', maxWidth: '440px', margin: '0 auto 2rem' }}>
-          Sin receta. Sin complicaciones. Dolor, gripe, alergias y digestivo a tu puerta.
+      <section className="landing-hero">
+        <p className="landing-badge">Farmacia online moderna</p>
+        <h1 className="landing-title">Medicamentos OTC con entrega rápida en Panamá</h1>
+        <p className="landing-subtitle">
+          Compra dolor, gripe, alergias y digestivo desde una experiencia clínica premium, sin receta y
+          sin complicaciones.
         </p>
-        <Link to="/products">
-          <button style={{
-            background: '#0284c7',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '8px',
-            padding: '0.75rem 2rem',
-            fontSize: '1rem',
-            fontWeight: 600,
-          }}>
-            Ver catálogo →
-          </button>
-        </Link>
+        <div className="landing-hero-actions">
+          <Link to="/products" className="btn-primary hero-cta">
+            Ver catálogo
+          </Link>
+          <Link to="/products?category=dolor" className="btn-secondary hero-cta-secondary">
+            Explorar categorías
+          </Link>
+        </div>
       </section>
 
-      <section>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          gap: '1rem',
-        }}>
-          {CATEGORIES.map(({ cat, emoji, label }) => (
-            <Link key={cat} to={`/products?category=${cat}`}>
-              <div style={{
-                background: '#fff',
-                border: '1px solid #e5e7eb',
-                borderRadius: '10px',
-                padding: '2rem 1rem',
-                textAlign: 'center',
-                transition: 'border-color 0.15s',
-              }}>
-                <div style={{ fontSize: '2.5rem' }}>{emoji}</div>
-                <p style={{ marginTop: '0.75rem', fontWeight: 600, color: '#374151' }}>{label}</p>
+      <section className="landing-categories">
+        <div className="landing-grid">
+          {CATEGORIES.map(({ cat, imageUrl, label }) => (
+            <Link key={cat} to={`/products?category=${cat}`} className="category-card-premium">
+              <div className="category-image-wrap">
+                <img
+                  src={imageUrl}
+                  alt={`Productos de ${label}`}
+                  className="category-image"
+                  loading="lazy"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = CATEGORY_IMAGE_FALLBACK;
+                  }}
+                />
               </div>
+              <p className="category-title">{label}</p>
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className="landing-benefits">
+        {BENEFITS.map((benefit) => (
+          <article key={benefit.title} className="benefit-card">
+            <h2>{benefit.title}</h2>
+            <p>{benefit.description}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="trust-band">
+        <p>+500 pedidos mensuales</p>
+        <p>Pagos seguros con Stripe</p>
+        <p>Atención enfocada en salud OTC</p>
       </section>
     </Layout>
   );
