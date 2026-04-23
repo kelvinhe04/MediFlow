@@ -2,11 +2,14 @@ import { Link } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 
 const CATEGORIES = [
-  { cat: 'dolor', emoji: '💊', label: 'Dolor' },
-  { cat: 'gripe', emoji: '🤧', label: 'Gripe' },
-  { cat: 'alergias', emoji: '🌿', label: 'Alergias' },
-  { cat: 'digestivo', emoji: '🫃', label: 'Digestivo' },
+  { cat: 'dolor', imageUrl: '/images/dolor/aspirina-500mg-20tab.webp', label: 'Dolor' },
+  { cat: 'gripe', imageUrl: '/images/gripe/panadol-multisintomas-48tab.webp', label: 'Gripe' },
+  { cat: 'alergias', imageUrl: '/images/alergias/cetirizina-10mg-20tab.jpg', label: 'Alergias' },
+  { cat: 'digestivo', imageUrl: '/images/digestivo/omeprazol-20mg-14cap.webp', label: 'Digestivo' },
 ];
+
+const CATEGORY_IMAGE_FALLBACK =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='100%25' height='100%25' fill='%23f1f5f9'/%3E%3C/svg%3E";
 
 export function LandingPage() {
   return (
@@ -39,17 +42,32 @@ export function LandingPage() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
           gap: '1rem',
         }}>
-          {CATEGORIES.map(({ cat, emoji, label }) => (
+          {CATEGORIES.map(({ cat, imageUrl, label }) => (
             <Link key={cat} to={`/products?category=${cat}`}>
               <div style={{
                 background: '#fff',
                 border: '1px solid #e5e7eb',
                 borderRadius: '10px',
-                padding: '2rem 1rem',
+                padding: '1rem',
                 textAlign: 'center',
-                transition: 'border-color 0.15s',
+                transition: 'border-color 0.15s, box-shadow 0.15s',
               }}>
-                <div style={{ fontSize: '2.5rem' }}>{emoji}</div>
+                <img
+                  src={imageUrl}
+                  alt={`Productos de ${label}`}
+                  loading="lazy"
+                  onError={(event) => {
+                    event.currentTarget.onerror = null;
+                    event.currentTarget.src = CATEGORY_IMAGE_FALLBACK;
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '140px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                    border: '1px solid #f1f5f9',
+                  }}
+                />
                 <p style={{ marginTop: '0.75rem', fontWeight: 600, color: '#374151' }}>{label}</p>
               </div>
             </Link>
